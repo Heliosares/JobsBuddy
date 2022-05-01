@@ -5,9 +5,11 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
+import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -23,6 +25,9 @@ public class MyListener implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onCommandPre(PlayerCommandPreprocessEvent event) {
+		if (!plugin.perJobLimit) {
+			return;
+		}
 		String command = event.getMessage();
 		if (command.startsWith("/")) {
 			command = command.substring(1);
@@ -95,13 +100,21 @@ public class MyListener implements Listener {
 			event.getPlayer().sendMessage(message);
 		}
 	}
+	
+	@EventHandler
+	public void onInteract(PlayerInteractEvent e) {
+		Jobs.getPlayerManager().getJobsPlayer(e.getPlayer()).getJobProgression(Jobs.getJob("Brewer"));
+		//new BrewActionInfo("");
+	}
 
 	@EventHandler
 	public void onPrePay(JobsPrePaymentEvent event) {
+		if (!plugin.perJobLimit) {
+			return;
+		}
 		if (event.isCancelled()) {
 			return;
 		}
-
 		if (event.getAmount() < 0) {
 			return;
 		}

@@ -1,4 +1,13 @@
+per-job-limit: false
+
 limit-duration: 3600000
 
 limit-equations:
-  global: 1000+10*joblevel
+  global: 1500+10*joblevel
+  
+Brewery:
+  Brewer:
+    brewname:
+      income: 1.0
+      points: 1.0
+      experience: 1.0
