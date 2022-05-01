@@ -72,6 +72,6 @@ public class JBPlayer {
 	public double getLimit(Job job) {
 		int level = jPlayer.getJobProgression(job).getLevel();
 
-		return plugin.getLimit(job.getName(), level);
+		return plugin.getLimit(job.getName(), level, jPlayer.getTotalLevels());
 	}
 }

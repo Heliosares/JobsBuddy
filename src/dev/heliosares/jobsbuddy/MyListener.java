@@ -23,7 +23,11 @@ public class MyListener implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onCommandPre(PlayerCommandPreprocessEvent event) {
-		if (event.getMessage().toLowerCase().startsWith("/jobs limit")) {
+		String command = event.getMessage();
+		if (command.startsWith("/")) {
+			command = command.substring(1);
+		}
+		if (command.startsWith("jobs limit")) {
 			String args[] = event.getMessage().split(" ");
 			event.setCancelled(true);
 			if (!MyPermission.LIMIT.hasPermission(event.getPlayer())) {
@@ -46,31 +50,46 @@ public class MyListener implements Listener {
 				return;
 			}
 			JBPlayer jbPlayer = plugin.getPlayer(target);
-			event.getPlayer().sendMessage("§6§lJobs limits:");
+			event.getPlayer().sendMessage("§e§lJobs limits:");
 			if (jobsPlayer.getJobProgression().size() > 0) {
 				for (JobProgression job : jobsPlayer.getJobProgression()) {
 					String jobName = job.getJob().getName();
 					double earned = jbPlayer.getEarned(jobName);
 					long cooldown = jbPlayer.getCooldown(jobName);
 					double limit = jbPlayer.getLimit(job.getJob());
+					String color = "";
+					double usage = earned / limit;
+					if (usage > 0.99) {
+						color = "§c";
+					}
 
-					String message = String.format("%s§e limit: %s/%s", job.getJob().getJobDisplayName(),
-							JobsBuddy.formatMoney(earned), JobsBuddy.formatMoney(limit));
+					String message = String.format("%s§e: %s/%s", job.getJob().getJobDisplayName(),
+							color + JobsBuddy.formatMoney(earned), JobsBuddy.formatMoney(limit));
 					if (cooldown > System.currentTimeMillis()) {
-						message += ", resets in: " + JobsBuddy.formatTime(cooldown - System.currentTimeMillis(), true);
+						message += "§e, resets in: "
+								+ JobsBuddy.formatTime(cooldown - System.currentTimeMillis(), true);
 						// TODO convert time
 					}
 					event.getPlayer().sendMessage(message);
 				}
-				event.getPlayer().sendMessage("");
+				String line = "§8§m";
+				for (int i = 0; i < 20; i++) {
+					line += (char) 65293;
+				}
+				event.getPlayer().sendMessage(line);
 			}
 			double amount = jobsPlayer.getPaymentLimit().getAmount(CurrencyType.MONEY);
 			int limit = jobsPlayer.getLimit(CurrencyType.MONEY);
-			String message = String.format("§eOverall limit: %s/%s", JobsBuddy.formatMoney(amount),
+			String color = "";
+			double usage = amount / (double) limit;
+			if (usage > 0.99) {
+				color = "§c";
+			}
+			String message = String.format("§eOverall: %s/%s", color + JobsBuddy.formatMoney(amount),
 					JobsBuddy.formatMoney(limit));
 			long cooldown = jobsPlayer.getPaymentLimit().getLeftTime(CurrencyType.MONEY);
-			if (cooldown > 0) {
-				message += ", resets in: " + JobsBuddy.formatTime(cooldown, true);
+			if (amount > 0.01) {
+				message += "§e, resets in: " + JobsBuddy.formatTime(cooldown, true);
 				// TODO convert time
 			}
 			event.getPlayer().sendMessage(message);

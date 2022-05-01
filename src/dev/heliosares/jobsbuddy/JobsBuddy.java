@@ -28,7 +28,7 @@ public class JobsBuddy extends JavaPlugin {
 		ConfigurationSection limitequations = getConfig().getConfigurationSection("limit-equations");
 		if (limitequations != null) {
 			for (String key : limitequations.getKeys(false)) {
-				limitEquations.put(key, new Parser(limitequations.getString(key)));
+				limitEquations.put(key.toLowerCase(), new Parser(limitequations.getString(key)));
 			}
 		}
 
@@ -160,7 +160,8 @@ public class JobsBuddy extends JavaPlugin {
 		return output.trim();
 	}
 
-	public double getLimit(String job, int level) {
+	public double getLimit(String job, int joblevel, int totallevel) {
+		job = job.toLowerCase().replaceAll(" ", "");
 		Parser parser = this.limitEquations.get(job);
 		if (parser == null) {
 			parser = this.limitEquations.get("global");
@@ -169,7 +170,8 @@ public class JobsBuddy extends JavaPlugin {
 			return -1;
 		}
 		try {
-			parser.setVariable("joblevel", level);
+			parser.setVariable("joblevel", joblevel);
+			parser.setVariable("totallevel", totallevel);
 			return parser.parse();
 		} catch (Exception e) {
 			e.printStackTrace();

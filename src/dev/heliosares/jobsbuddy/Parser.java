@@ -27,6 +27,8 @@ public class Parser {
 	}
 
 	public double parse() {
+		pos = -1;
+		ch = -1;
 		nextChar();
 		double x = parseExpression();
 		if (pos < equation.length())
@@ -113,7 +115,8 @@ public class Parser {
 					throw new RuntimeException("Unknown function: " + func);
 			}
 		} else {
-			throw new RuntimeException("Unexpected: " + (char) ch);
+			throw new RuntimeException(
+					"Unexpected: '" + (char) ch + "' (" + ch + ") in equation '" + equation + "' index " + pos);
 		}
 
 		if (eat('^'))
