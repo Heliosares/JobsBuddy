@@ -1,0 +1,4 @@
+limit-duration: 3600000
+
+limit-equations:
+  global: 750+15*joblevel

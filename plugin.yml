@@ -1,0 +1,11 @@
+name: JobsBuddy
+version: 0.0.1
+main: dev.heliosares.jobsbuddy.JobsBuddy
+description: Jobs companion plugin
+api-version: 1.16
+depend: [Jobs]
+
+commands:
+    jobsbuddy:
+        usage: /jobsbuddy
+        description: Base command
