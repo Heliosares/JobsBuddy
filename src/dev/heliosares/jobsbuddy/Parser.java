@@ -10,7 +10,7 @@ public class Parser {
 		this.equation = equation;
 	}
 
-	int pos = -1, ch;
+	private int pos = -1, ch;
 
 	private void nextChar() {
 		ch = (++pos < equation.length()) ? equation.charAt(pos) : -1;
@@ -26,13 +26,14 @@ public class Parser {
 		return false;
 	}
 
-	public double parse() {
+	public double solve() {
 		pos = -1;
 		ch = -1;
 		nextChar();
 		double x = parseExpression();
 		if (pos < equation.length())
 			throw new RuntimeException("Unexpected: " + (char) ch);
+		variables.clear();
 		return x;
 	}
 

@@ -34,6 +34,11 @@
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
 		</repository>
+		<repository>
+			<id>codemc-repo</id>
+			<url>https://repo.codemc.org/repository/maven-public/</url>
+			<layout>default</layout>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -54,8 +59,27 @@
 			<version>3.1</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.cmilib</groupId>
+			<artifactId>auctionhouse</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${jars}/CMILib1.1.2.5.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.github.brcdev-minecraft</groupId>
+			<artifactId>shopgui-api</artifactId>
+			<version>2.4.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.tr7zw</groupId>
+			<artifactId>item-nbt-api-plugin</artifactId>
+			<version>2.9.2</version>
+		</dependency>
 	</dependencies>
 	<properties>
+		<jars>${env.USERPROFILE}/eclipse-workspace/jars</jars>
 		<testserver>${env.USERPROFILE}/Documents/TestServer/Test1/</testserver>
 	</properties>
 </project>

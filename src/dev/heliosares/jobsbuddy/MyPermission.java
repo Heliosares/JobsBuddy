@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public enum MyPermission {
-	ADMIN("admin"), LIMIT("limit"), LIMIT_OTHERS("limit.others");
+	ADMIN("admin"), LIMIT("limit"), LIMIT_OTHERS("limit.others"), REWARD_BREWERY("reward.brewery");
 
 	public final String node;
 

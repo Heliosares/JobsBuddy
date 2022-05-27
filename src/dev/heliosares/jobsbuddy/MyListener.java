@@ -2,14 +2,19 @@ package dev.heliosares.jobsbuddy;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
-import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -25,14 +30,14 @@ public class MyListener implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onCommandPre(PlayerCommandPreprocessEvent event) {
-		if (!plugin.perJobLimit) {
-			return;
-		}
 		String command = event.getMessage();
 		if (command.startsWith("/")) {
 			command = command.substring(1);
 		}
-		if (command.startsWith("jobs limit")) {
+		if (command.startsWith("jobs ")) {
+			event.setMessage(event.getMessage().replaceAll("Exotic Hunter", "ExoticHunter"));
+		}
+		if (command.startsWith("jobs limit") && plugin.perJobLimit) {
 			String args[] = event.getMessage().split(" ");
 			event.setCancelled(true);
 			if (!MyPermission.LIMIT.hasPermission(event.getPlayer())) {
@@ -100,15 +105,14 @@ public class MyListener implements Listener {
 			event.getPlayer().sendMessage(message);
 		}
 	}
-	
-	@EventHandler
-	public void onInteract(PlayerInteractEvent e) {
-		Jobs.getPlayerManager().getJobsPlayer(e.getPlayer()).getJobProgression(Jobs.getJob("Brewer"));
-		//new BrewActionInfo("");
-	}
 
 	@EventHandler
 	public void onPrePay(JobsPrePaymentEvent event) {
+		if (!event.getJob().getName().equalsIgnoreCase(plugin.brewerName)) {
+			return;
+		}
+		plugin.debug(
+				event.getPlayer().getName() + " earned $" + event.getAmount() + " from " + event.getJob().getName());
 		if (!plugin.perJobLimit) {
 			return;
 		}
@@ -125,8 +129,33 @@ public class MyListener implements Listener {
 			event.setAmount(canearn);
 		}
 		jPlayer.earn(event.getJob().getName(), canearn);
+	}
 
-		plugin.getLogger().info(
-				event.getPlayer().getName() + " earned $" + event.getAmount() + " from " + event.getJob().getName());
+	@EventHandler
+	public void onEntityChangeBlockEvent(EntityChangeBlockEvent e) {
+		if (e.getEntity().getType() != EntityType.SILVERFISH) {
+			return;
+		}
+		if (e.getEntity().hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
+			e.getBlock().setMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(),
+					(MetadataValue) new FixedMetadataValue(plugin.getServer().getPluginManager().getPlugin("Jobs"),
+							Boolean.valueOf(true)));
+		}
+	}
+
+	@EventHandler
+	public void onCreatureSpawnEvent(CreatureSpawnEvent e) {
+		if (e.getEntity().getType() != EntityType.SILVERFISH) {
+			return;
+		}
+		if (e.getSpawnReason() != SpawnReason.SILVERFISH_BLOCK) {
+			return;
+		}
+		Block block = e.getEntity().getLocation().getBlock();
+		if (block.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
+			e.getEntity().setMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(),
+					(MetadataValue) new FixedMetadataValue(plugin.getServer().getPluginManager().getPlugin("Jobs"),
+							Boolean.valueOf(true)));
+		}
 	}
 }

@@ -1,13 +1,88 @@
 per-job-limit: false
+custom-limit: false
 
 limit-duration: 3600000
 
 limit-equations:
   global: 1500+10*joblevel
   
-Brewery:
-  Brewer:
-    brewname:
-      income: 1.0
-      points: 1.0
-      experience: 1.0
+# Whether or not to award earnings for the below section.
+brewery-earnings: true
+  
+brew-income-modification-equation: (value*0.15+difficulty*0.6)*quality/10*0.5
+brew-exp-modification-equation: (value*0.15+difficulty*0.6)*quality/10
+
+brewer-name: Brewer
+
+ItemValues:
+  POTATO: 0.125
+  GUNPOWDER: 0.0625
+  BROWN_MUSHROOM: 0.125
+  COOKIE: 0.6
+  IRON_NUGGET: 0.22222
+  SNOWBALL: 0.1
+  BLAZE_ROD: 0.1875
+  OAK_LEAVES: 0.125
+  GLOWSTONE: 0.2
+  COOKED_MUTTON: 1.0
+  GLOW_BERRIES: 0.3125
+  JUNGLE_LEAVES: 0.125
+  MILK_BUCKET: 6.0
+  DIAMOND: 50.0
+  FEATHER: 0.0625
+  WHEAT: 0.3125
+  COOKED_RABBIT: 1.0
+  GOLDEN_APPLE: 9
+  CAKE: 1
+  EGG: 0.0625
+  CHARCOAL: 0.5
+  SWEET_BERRIES: 0.15625
+  COCOA_BEANS: 0.125
+  ACACIA_LEAVES: 0.125
+  GOLD_NUGGET: 0.1388875
+  BREAD: 0.5
+  COOKED_PORKCHOP: 1.0
+  BIRCH_LEAVES: 0.125
+  POWDER_SNOW_BUCKET: 6.0
+  COOKED_BEEF: 1.0
+  REDSTONE: 0.625
+  SOUL_SAND: 0.09375
+  PUMPKIN_SEEDS: 0.125
+  BAKED_POTATO: 0.6
+  COOKED_CHICKEN: 0.9
+  APPLE: 0.5
+  SPRUCE_LEAVES: 0.125
+  RED_MUSHROOM: 0.125
+  SOUL_SOIL: 0.09375
+  ENDER_PEARL: 0.25
+  MAGMA_CREAM: 0.15625
+  LAVA_BUCKET: 6.0
+  MELON_SLICE: 0.125
+  BEETROOT: 0.3125
+  WHEAT_SEEDS: 0.125
+  DARK_OAK_LEAVES: 0.125
+  DANDELION: 0.125
+  HONEY_BOTTLE: 0.125
+  POPPY: 0.125
+  SUGAR: 0.125
+  POISONOUS_POTATO: 0.2
+  KELP: 0.125
+  VINE: 0.125
+  CACTUS: 0.125
+  BLUE_ORCHID: 0.125
+  PHANTOM_MEMBRANE: 0.125
+  TNT: 2
+  PURPLE_DYE: 0.125
+  CORNFLOWER: 0.125
+  BLAZE_POWDER: 0.125
+  RED_DYE: 0.125
+  SUGAR_CANE: 0.125
+  GLOWSTONE_DUST: 0.125
+  DRAGON_BREATH: 0.125
+  SPRUCE_PLANKS: 0.125
+  GRASS: 0.125
+  BARRIER: 0.125
+  GREEN_DYE: 0.125
+  CHORUS_FRUIT: 0.125
+  GLISTERING_MELON_SLICE: 0.125
+  BEDROCK: 0.125
